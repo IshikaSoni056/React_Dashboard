@@ -6,6 +6,9 @@ import Doctor from "./pages/Doctor";
 import Patient from "./pages/Patient";
 import { ROLES } from "./utils/roleUtils";
 import Unauthorized from "./pages/Unauthorised";
+import './App.css';
+
+
 
 function App() {
   return (

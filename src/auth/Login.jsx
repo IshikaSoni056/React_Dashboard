@@ -5,12 +5,14 @@ import { useAuth } from "./AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("admin");
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = login({ email, password });
+    const user = login({ email, password, role });
     if (user) {
       navigate(`/${user.role}`);
     } else {
@@ -19,29 +21,64 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 bg-white p-6 shadow rounded-xl">
-      <h2 className="text-xl font-bold mb-4 text-center">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 border rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button className="w-full bg-blue-600 text-white p-2 rounded">
-          Login
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-indigo-200">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-xl">
+        <h2 className="text-2xl font-extrabold text-center text-gray-800">
+          🩺 Doctor-Patient Portal Login
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Role</label>
+            <select
+              className="mt-1 w-full p-2 border border-gray-300 rounded"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="admin">Admin</option>
+              <option value="doctor">Doctor</option>
+              <option value="patient">Patient</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              placeholder="example@mail.com"
+              className="mt-1 w-full p-2 border border-gray-300 rounded"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              placeholder="********"
+              className="mt-1 w-full p-2 border border-gray-300 rounded"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded font-semibold"
+          >
+            Log In
+          </button>
+        </form>
+
+        <div className="text-sm text-gray-500 text-center">
+          Try credentials like:<br />
+          <span className="font-mono text-blue-700">admin@mail.com / admin</span><br />
+          <span className="font-mono text-blue-700">doc@mail.com / doctor</span><br />
+          <span className="font-mono text-blue-700">pat@mail.com / patient</span>
+        </div>
+      </div>
     </div>
   );
 };
