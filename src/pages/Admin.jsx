@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { mockStats } from "../data/mockdata";
 
 import { addUser, getLocalData, removeUser } from "../utils/storage";
+import { deleteAppointment, getAppointments } from "../utils/dbServices";
 
 
 const initialUsers = [
@@ -253,6 +254,57 @@ const Admin = () => {
         <p className="text-3xl font-bold text-orange-600 mt-2">{mockStats.upcomingAppointments}</p>
       </div>
     </div>
+  </div>
+)}
+
+{activeTab === "appointments" && (
+  <div className="mt-8">
+    <table className="w-full bg-white rounded-xl shadow overflow-hidden ">
+      <thead className="bg-gray-200">
+        <tr>
+          <th className="py-2 px-4 text-left">Doctor</th>
+          <th className="py-2 px-4 text-left">Patient</th>
+          <th className="py-2 px-4 text-left">Date</th>
+          <th className="py-2 px-4 text-left">Time</th>
+          <th className="py-2 px-4 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {getAppointments().length === 0 ? (
+          <tr>
+            <td colSpan="5" className="text-center p-4 text-gray-500">
+              No appointments found.
+            </td>
+          </tr>
+        ) : (
+          getAppointments().map((appt) => {
+            const users = getLocalData("users") || [];
+            const doctor = users.find((u) => u.id === appt.doctorId);
+            const patient = users.find((u) => u.id === appt.patientId);
+
+            return (
+              <tr key={appt.id} className="border-b">
+                <td className="py-2 px-4">{doctor?.name || "Unknown Doctor"}</td>
+                <td className="py-2 px-4">{patient?.name || "Unknown Patient"}</td>
+                <td className="py-2 px-4">{appt.date}</td>
+                <td className="py-2 px-4">{appt.time || "N/A"}</td>
+                <td className="py-2 px-4">
+                  <button
+                    onClick={() => {
+                      deleteAppointment(appt.id);
+                      window.location.reload(); // Quick refresh, optional
+                    }}
+                    className="bg-red-600 text-white px-3 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })
+        )}
+      </tbody>
+    </table>
   </div>
 )}
       </main>

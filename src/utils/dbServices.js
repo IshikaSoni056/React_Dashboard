@@ -52,3 +52,13 @@ export const deleteFromStorageById = (key, id) => {
   saveToStorage(key, items);
 };
 
+
+
+export const deleteAppointment = (id) => {
+  const data = getData();
+  data.appointments = data.appointments.filter(a => a.id !== id);
+  saveData(data);
+};
+
+export const countUsersByRole = (role) =>
+  getUsers().filter(u => u.role.toLowerCase() === role.toLowerCase()).length;
