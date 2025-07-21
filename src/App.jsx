@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import Admin from "./pages/Admin";
@@ -12,7 +12,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router basename="/React_Dashboard">
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
@@ -43,7 +43,7 @@ function App() {
           }
         />
       </Routes>
-    </Router>
+    </HashRouter>
   );
 }
 
