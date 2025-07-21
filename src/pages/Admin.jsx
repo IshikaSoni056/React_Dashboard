@@ -1,7 +1,7 @@
 import { useAuth } from "../auth/AuthContext";
 import { useEffect, useState } from "react";
 import { mockStats } from "../data/mockdata";
-import { doctors, patients } from "../data/mockUsers";
+
 import { addUser, getLocalData, removeUser } from "../utils/storage";
 
 

@@ -5,3 +5,16 @@ export const ROLES = {
 };
 
 export const hasAccess = (role, allowedRoles) => allowedRoles.includes(role);
+
+export const getShifts = () => JSON.parse(localStorage.getItem("shifts")) || [];
+
+export const addShift = (shift) => {
+  const shifts = getShifts();
+  const newShift = { id: Date.now(), ...shift };
+  localStorage.setItem("shifts", JSON.stringify([...shifts, newShift]));
+};
+
+export const removeShift = (id) => {
+  const shifts = getShifts().filter(s => s.id !== id);
+  localStorage.setItem("shifts", JSON.stringify(shifts));
+};
