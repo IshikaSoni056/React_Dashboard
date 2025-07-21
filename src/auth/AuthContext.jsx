@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -10,19 +10,48 @@ const users = [
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const login = ({ email, password }) => {
-    const foundUser = users.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (foundUser) setUser(foundUser);
-    return foundUser;
+  const foundUser = users.find(
+    (u) => u.email === email && u.password === password
+  );
+  if (foundUser) {
+    setUser(foundUser);
+    localStorage.setItem("user", JSON.stringify(foundUser)); //  store in localStorage
+  }
+  return foundUser;
+};
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
   };
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+     setLoading(false);
+  }, []);
 
-  const logout = () => setUser(null);
+  const [doctors, setDoctors] = useState(() => {
+  const stored = localStorage.getItem("doctors");
+  return stored ? JSON.parse(stored) : [];
+});
+const addDoctor = (newDoctor) => {
+  const updated = [...doctors, newDoctor];
+  setDoctors(updated);
+  localStorage.setItem("doctors", JSON.stringify(updated));
+};
 
+const removeDoctor = (id) => {
+  const updated = doctors.filter(doc => doc.id !== id);
+  setDoctors(updated);
+  localStorage.setItem("doctors", JSON.stringify(updated));
+};
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

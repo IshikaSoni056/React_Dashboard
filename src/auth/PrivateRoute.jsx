@@ -1,12 +1,18 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
-import { hasAccess } from "../utils/roleUtils";
+import { useAuth } from "../auth/AuthContext";
 
 const PrivateRoute = ({ children, allowedRoles }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  if (!user) return <Navigate to="/login" />;
-  if (!hasAccess(user.role, allowedRoles)) return <Navigate to="/unauthorized" />;
+  if (loading) return <div>Loading...</div>; // wait until user state is restored
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return children;
 };

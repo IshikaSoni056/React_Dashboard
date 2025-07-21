@@ -73,7 +73,7 @@ const Login = () => {
         </form>
 
         <div className="text-sm text-gray-500 text-center">
-          Try credentials like:<br />
+          Credentals:<br />
           <span className="font-mono text-blue-700">admin@mail.com / admin</span><br />
           <span className="font-mono text-blue-700">doc@mail.com / doctor</span><br />
           <span className="font-mono text-blue-700">pat@mail.com / patient</span>
